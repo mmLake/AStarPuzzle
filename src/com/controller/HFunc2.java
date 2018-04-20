@@ -15,6 +15,14 @@ public class HFunc2 extends HFunc{
             //if an integer is not in the correct location on the puzzle
             if (puzzleIdx != i){
                 //represent the index values as a 2D array without using an actual 2D array for speed
+                /*
+                            0   1   2
+                        0   0   1   2
+                        1   3   4   5
+                        2   6   7   8
+                 */
+                //example: 6 is in position [0][2] 6%3 = 0 (x), 6/3 = 2 (y).
+
                 int correctX = i % 3;
                 int correctY = i / 3;
 

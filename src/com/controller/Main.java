@@ -1,7 +1,9 @@
 package com.controller;
 
 import com.View.RandomInput;
+import com.View.ReadTestFile;
 import com.View.StandardInput;
+import com.model.Frontier;
 import com.model.PuzzleState;
 
 public class Main {
@@ -11,17 +13,31 @@ public class Main {
     StandardInput si;
 
     public static void main(String[] args) {
+
+//        RandomInput ri = new RandomInput();
         HFunc1 h1 = new HFunc1();
         HFunc2 h2 = new HFunc2();
-        PuzzleState testPuzzle = new PuzzleState("018652374");
+        Frontier frontier;
+
+        try {
+            ReadTestFile rtf = new ReadTestFile();
+
+//            while (rtf.populatePuzzle() != null) {
+
+                PuzzleState testPuzzle = new PuzzleState("158634072", h1);
+
+                if (testPuzzle.isSolvable()) {
+                    frontier = new Frontier(testPuzzle);
+
+                }
+//            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
 
-        System.out.println("Is solvable? " + testPuzzle.isSolvable());
-        System.out.println("HF1? " + h1.heuristicVal(testPuzzle.getTiles()));
-        System.out.println("HF2? " + h2.heuristicVal(testPuzzle.getTiles()));
 
 
-        PuzzleState test2 = new PuzzleState("518602374");
-        System.out.println(test2.isSolvable());
     }
 }

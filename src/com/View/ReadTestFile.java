@@ -10,7 +10,7 @@ import java.io.FileReader;
  * Created by mayalake on 4/15/18.
  */
 public class ReadTestFile {
-    private static final String inputFilePath = "com/input1.txt";
+    private static final String inputFilePath = "src/com/input1.txt";
 
     private File file;
     private BufferedReader br;

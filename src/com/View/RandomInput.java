@@ -21,6 +21,7 @@ public class RandomInput {
 
     private boolean isValid(List<Integer> puzzle){
         //algorithm to check if # of inversions % 2 == 0
+
         return true;
     }
 }

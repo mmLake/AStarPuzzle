@@ -8,15 +8,6 @@ import org.omg.CORBA.PUBLIC_MEMBER;
  * Created by mayalake on 4/10/18.
  */
 public class HFunc1 extends HFunc{
-    PuzzleState puzzleState;
-    TestData testData;
-
-
-//    public void solvePuzzle(PuzzleState puzzleState, int cost, int depth){
-//       if (puzzleState.isSolvable()){
-//
-//       }
-//    }
 
     public int heuristicVal(String state){
         int heuristicVal = 0;
