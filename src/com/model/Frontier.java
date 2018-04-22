@@ -13,6 +13,7 @@ public class Frontier {
     private int numberOfStates = 0;
     private boolean errorSolvingPuzzle = false;
     private int finalDepth;
+    private String puzzlePath = "\n";
 
     private static void instantiateExpandIdxMap(){
         MAP_TO_IDXS_FOR_0.put(0, Arrays.asList(1,3));
@@ -34,6 +35,12 @@ public class Frontier {
         errorSolvingPuzzle = (finalState == null);
 
         finalDepth = (errorSolvingPuzzle? null: finalState.getDepth());
+
+        //create path to solve puzzle
+        PuzzleState temp = finalState;
+        while ((temp = temp.getParent()) != null){
+            puzzlePath = temp.getTiles() + "\n" + puzzlePath;
+        }
     }
 
     private PuzzleState aStarAlgorithm(PuzzleState temp){
@@ -79,13 +86,14 @@ public class Frontier {
         }
     }
 
-    public String toString(){
-        if (errorSolvingPuzzle){
+    public String toString() {
+
+        if (errorSolvingPuzzle) {
             return "ERROR SOLVING PUZZLE";
-        }else {
+        } else {
             return "Depth " + finalDepth + "\n"
-                    +"Total # of states " + numberOfStates + "\n"
-                    ;
+                    + "Total # of states " + numberOfStates + "\n"
+                    + puzzlePath;
         }
     }
 }

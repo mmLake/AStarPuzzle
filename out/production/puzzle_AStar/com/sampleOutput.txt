@@ -1,0 +1,21 @@
+ Puzzle: 834027651Depth 21
+Total # of states 8692
+
+ Puzzle: 863051742Depth 21
+Total # of states 7848
+
+ Puzzle: 148273056Depth 26
+Total # of states 53617
+
+Puzzle: 608472531
+Depth 29
+Total # of states 121585
+
+Puzzle: 478105263
+Depth 26
+Total # of states 61841
+
+Puzzle: 201568347
+Depth 19
+Total # of states 3850
+

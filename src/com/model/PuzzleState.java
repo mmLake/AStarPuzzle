@@ -17,18 +17,7 @@ public class PuzzleState {
     private HFunc hFunc;
     private int heuristicVal;
     private PuzzleState parent = null;
-
-    public PuzzleState(RandomInput ra, HFunc hFunc){
-        tiles = ra.populatePuzzle();
-        this.hFunc = hFunc;
-        setHeuristicVal();
-    }
-
-    public PuzzleState(StandardInput sa, HFunc hFunc){
-        tiles = sa.populatePuzzle();
-        this.hFunc = hFunc;
-        setHeuristicVal();
-    }
+    private long runTimeInMS = 0;
 
     public PuzzleState(String testing, HFunc hFunc){
         tiles = testing;
@@ -98,6 +87,10 @@ public class PuzzleState {
         return hFunc;
     }
 
+    public PuzzleState getParent() {
+        return parent;
+    }
+
     @Override
     public boolean equals(Object puzzleState) {
         if (puzzleState instanceof PuzzleState){
@@ -113,6 +106,7 @@ public class PuzzleState {
 
     @Override
     public String toString(){
-        return this.tiles;
+        //modify to return the path of puzzle to get solved
+        return tiles;
     }
 }

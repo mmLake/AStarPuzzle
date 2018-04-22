@@ -3,22 +3,17 @@ package com.controller;
 import com.View.RandomInput;
 import com.View.ReadTestFile;
 import com.View.WriteSampleOutput;
-import com.View.StandardInput;
 import com.model.Frontier;
 import com.model.PuzzleState;
 
 import java.util.Scanner;
 
 public class Main {
-    PuzzleState puzzleState;
-
-    RandomInput ri;
-    StandardInput si;
+    private static final HFunc1 HEURISTIC_FUNC_1 = new HFunc1();
+    private static final HFunc2 HEURISTIC_FUNC_2 = new HFunc2();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        HFunc1 h1 = new HFunc1();
-        HFunc2 h2 = new HFunc2();
         PuzzleState puzzleState;
 
         while(true) {
@@ -47,7 +42,7 @@ public class Main {
                     } while (formattedPuzzle == null);
 
                     //solve puzzle and print results
-                    puzzleState = new PuzzleState(formattedPuzzle, h1);
+                    puzzleState = new PuzzleState(formattedPuzzle, HEURISTIC_FUNC_1);
                     printResults(puzzleState);
 
                     break;
@@ -60,7 +55,7 @@ public class Main {
                     for (int i = 0; i < RandomInput.NUMBER_OF_RANDOM_PUZZLES; i++) {
                         randomPuzzle = randomInput.populatePuzzle();
 
-                        puzzleState = new PuzzleState(randomPuzzle, h1);
+                        puzzleState = new PuzzleState(randomPuzzle, HEURISTIC_FUNC_1);
                         printResults(puzzleState);
                     }
 
@@ -106,9 +101,7 @@ public class Main {
                 "\t(3)Generate and solve 10 random puzzles\n");
     }
 
-    public void runTests(){
-        HFunc1 h1 = new HFunc1();
-        HFunc2 h2 = new HFunc2();
+    private static void runTests(){
         Frontier frontier;
 
         try {
@@ -117,12 +110,10 @@ public class Main {
                 String newPuzzle;
 
                 while ((newPuzzle = rtf.populatePuzzle()) != null) {
+                    PuzzleState testPuzzle = new PuzzleState(newPuzzle, HEURISTIC_FUNC_1);
 
-                    PuzzleState testInputRead = new PuzzleState(newPuzzle, h1);
-
-
-                    if (testInputRead.isSolvable()) {
-                        frontier = new Frontier(testInputRead);
+                    if (testPuzzle.isSolvable()) {
+                        frontier = new Frontier(testPuzzle);
                     }
                 }
             }
@@ -132,8 +123,18 @@ public class Main {
         }
     }
 
-    public void populateSampleOutput(){
-        WriteSampleOutput writeSampleOutput = new WriteSampleOutput();
+    private static void populateSampleOutput(){
+        try {
+            WriteSampleOutput writeSampleOutput = new WriteSampleOutput();
+            RandomInput randomInput = new RandomInput();
+            String puzzle;
 
+            for (int i = 0; i < WriteSampleOutput.NUMBER_OF_SAMPLE_PUZZLES; i++) {
+                puzzle = randomInput.populatePuzzle();
+                writeSampleOutput.write(puzzle, HEURISTIC_FUNC_1);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
