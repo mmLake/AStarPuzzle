@@ -16,8 +16,7 @@ public class PuzzleState {
     private int depth = 0;
     private HFunc hFunc;
     private int heuristicVal;
-
-    private ArrayList<PuzzleState> childStates = new ArrayList<>();
+    private PuzzleState parent = null;
 
     public PuzzleState(RandomInput ra, HFunc hFunc){
         tiles = ra.populatePuzzle();
@@ -43,7 +42,12 @@ public class PuzzleState {
 
     public boolean isSolvable() {
         int inversion = 0;
-        String inversionTiles = tiles.split("0")[0] + tiles.split("0")[1];
+        String inversionTiles = "";
+        String[] tilesWithout0 = tiles.split("0");
+        for (String s : tilesWithout0) {
+            inversionTiles += s;
+        }
+
         for (int i = 0; i < PUZZLE_SIZE-1; i++){
             for (int j = i+1; j < PUZZLE_SIZE-1; j++) {
                 if (Character.getNumericValue(inversionTiles.charAt(i)) > Character.getNumericValue(inversionTiles.charAt(j))) {
@@ -65,20 +69,11 @@ public class PuzzleState {
                 + tiles.substring(higherIdx+1);
 
         PuzzleState puzzleState = new PuzzleState(newTiles, hFunc);
-
         puzzleState.depth = this.depth+1;
-
-        System.out.println("PARENT DEPTH " + this.depth + " CHILD DEPTH " + puzzleState.depth);
-        System.out.println("CHILD TILES " + puzzleState.getTiles() + " CHILD H " + puzzleState.heuristicVal);
+        puzzleState.parent = this;
 
         return puzzleState;
     }
-
-    public void addChildState(PuzzleState childState){
-        childStates.add(childState);
-    }
-
-    public void incrementDepth(){depth++;}
 
     //use when checking testfiles
     public void setDepth(int depth){
@@ -91,10 +86,6 @@ public class PuzzleState {
 
     public String getTiles() {
         return tiles;
-    }
-
-    public ArrayList<PuzzleState> getChildStates(){
-        return childStates;
     }
 
     public int getDepth(){return depth;}
@@ -118,5 +109,10 @@ public class PuzzleState {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return this.tiles;
     }
 }

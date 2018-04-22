@@ -1,4 +1,4 @@
-package View;
+package com.View;
 
 /**
  * Created by mayalake on 4/10/18.

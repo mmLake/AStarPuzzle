@@ -11,8 +11,8 @@ public class HFunc1 extends HFunc{
 
     public int heuristicVal(String state){
         int heuristicVal = 0;
-        for (int i = 0; i < PuzzleState.PUZZLE_SIZE; i++){
-            if (Character.getNumericValue(state.charAt(i)) != i){
+        for (int i = 0; i < state.length(); i++){
+            if ((Character.getNumericValue(state.charAt(i)) != i) && (state.charAt(i)!='0')){
                 heuristicVal++;
             }
         }

@@ -10,39 +10,30 @@ import java.io.FileReader;
  * Created by mayalake on 4/15/18.
  */
 public class ReadTestFile {
-    private static final String inputFilePath = "src/com/input1.txt";
+    private static final String DEPTH = "Depth";
 
     private File file;
     private BufferedReader br;
-    private int depth = 0;
-    private String tiles = "";
 
-    public ReadTestFile() throws Exception{
-        file = new File(inputFilePath);
+    public ReadTestFile(String filePath) throws Exception{
+        file = new File(filePath);
         br = new BufferedReader(new FileReader(file));
     }
 
-    public PuzzleState populatePuzzle() throws Exception {
+    public String populatePuzzle() throws Exception {
         String puzzleInput;
 
         //check if text file is empty
-        if ((puzzleInput = br.readLine()) == null){
-            return null;
+        if ((puzzleInput = br.readLine()) != null){
+            if (puzzleInput.contains(DEPTH)){
+                System.out.println(puzzleInput);
+
+                return br.readLine();
+            } else {
+                return puzzleInput;
+            }
         }
 
-        //if file is not empty, get puzzle and puzzle depth
-        puzzleInput = br.readLine();
-
-        if (puzzleInput.contains("Depth")){
-            depth = Integer.parseInt(puzzleInput.substring(6));
-            tiles = br.readLine();
-        } else {
-            tiles = puzzleInput;
-        }
-
-
-        PuzzleState testPuzzle = new PuzzleState(tiles);
-        testPuzzle.setDepth(depth);
-        return testPuzzle;
+        return null;
     }
 }
