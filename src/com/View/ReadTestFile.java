@@ -10,6 +10,7 @@ import java.io.FileReader;
  * Created by mayalake on 4/15/18.
  */
 public class ReadTestFile {
+    public static final String[] INPUT_FILE_PATHS = {"src/com/input1.txt", "src/com/input2.txt"};
     private static final String DEPTH = "Depth";
 
     private File file;

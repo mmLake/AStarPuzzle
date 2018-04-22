@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
  * Created by mayalake on 4/10/18.
  */
 public class RandomInput {
+    public static final int NUMBER_OF_RANDOM_PUZZLES = 10;
 
     public String populatePuzzle(){
         List<Integer> puzzleVals= Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);

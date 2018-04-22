@@ -2,6 +2,7 @@ package com.controller;
 
 import com.View.RandomInput;
 import com.View.ReadTestFile;
+import com.View.WriteSampleOutput;
 import com.View.StandardInput;
 import com.model.Frontier;
 import com.model.PuzzleState;
@@ -9,9 +10,6 @@ import com.model.PuzzleState;
 import java.util.Scanner;
 
 public class Main {
-    public static final String[] INPUT_FILE_PATHS = {"src/com/input1.txt", "src/com/input2.txt"};
-    public static final int NUMBER_OF_RANDOM_PUZZLES = 10;
-
     PuzzleState puzzleState;
 
     RandomInput ri;
@@ -59,7 +57,7 @@ public class Main {
                     //generate puzzle input
                     String randomPuzzle;
 
-                    for (int i = 0; i < NUMBER_OF_RANDOM_PUZZLES; i++) {
+                    for (int i = 0; i < RandomInput.NUMBER_OF_RANDOM_PUZZLES; i++) {
                         randomPuzzle = randomInput.populatePuzzle();
 
                         puzzleState = new PuzzleState(randomPuzzle, h1);
@@ -114,7 +112,7 @@ public class Main {
         Frontier frontier;
 
         try {
-            for (String filePath : INPUT_FILE_PATHS) {
+            for (String filePath : ReadTestFile.INPUT_FILE_PATHS) {
                 ReadTestFile rtf = new ReadTestFile(filePath);
                 String newPuzzle;
 
@@ -132,5 +130,10 @@ public class Main {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void populateSampleOutput(){
+        WriteSampleOutput writeSampleOutput = new WriteSampleOutput();
+
     }
 }
