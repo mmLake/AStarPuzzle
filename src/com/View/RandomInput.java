@@ -1,5 +1,8 @@
 package com.View;
 
+import com.controller.PuzzleStateController;
+import com.model.PuzzleState;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,27 +26,8 @@ public class RandomInput {
             finalPuzzle = puzzleVals.stream()
                     .map(n -> String.valueOf(n))
                     .collect(Collectors.joining(""));
-        }while(!isValid(finalPuzzle));
+        }while(!PuzzleStateController.isValid(finalPuzzle));
 
         return finalPuzzle;
     }
-
-    public boolean isValid(String puzzle) {
-        int inversion = 0;
-        String inversionTiles = "";
-        String[] tilesWithout0 = puzzle.split("0");
-        for (String s : tilesWithout0) {
-            inversionTiles += s;
-        }
-
-        for (int i = 0; i < puzzle.length()-1; i++){
-            for (int j = i+1; j < puzzle.length()-1; j++) {
-                if (Character.getNumericValue(inversionTiles.charAt(i)) > Character.getNumericValue(inversionTiles.charAt(j))) {
-                    inversion++;
-                }
-            }
-        }
-        return (inversion % 2 == 0);
-    }
-
 }
