@@ -13,6 +13,8 @@ public class Main {
     private static final HFunc1 HEURISTIC_FUNC_1 = new HFunc1();
     private static final HFunc2 HEURISTIC_FUNC_2 = new HFunc2();
 
+    private static HFunc hFunc = HEURISTIC_FUNC_1;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Frontier frontier;
@@ -20,62 +22,66 @@ public class Main {
 
         FrontierController.instantiateExpandIdxMap();
 
-        //testing
-        populateDataCollection();
+        //for testing
+//        populateDataCollection();
+//        populateSampleOutput();
+//        runTests();
 
-//        while(true) {
-//            printWelcomeMsg();
-//
-//            int num;
-//            do {
-//                System.out.print("Enter a number: ");
-//                num = Integer.parseInt(sc.nextLine());
-//            } while (!((num >= 1) && (num <= 3)));
-//
-//            switch (num) {
-//                case 1:
-//                    System.exit(0);
-//                    break;
-//                case 2:
-//                    String enteredPuzzle;
-//                    String formattedPuzzle;
-//
-//                    //ask for puzzle input
-//                    do {
-//                        System.out.print("Enter a puzzle: ");
-//                        enteredPuzzle = sc.nextLine();
-//                        formattedPuzzle = correctInput(enteredPuzzle);
-//                    } while (formattedPuzzle == null);
-//
-//                    //solve puzzle
-//                    puzzleState = new PuzzleState(formattedPuzzle, HEURISTIC_FUNC_1);
-//                    frontier = new Frontier(puzzleState);
-//
-//                    //print results
-//                    System.out.println(frontier.toString());
-//
-//                    break;
-//                case 3:
-//                    RandomInput randomInput = new RandomInput();
-//
-//                    //generate puzzle input
-//                    String randomPuzzle;
-//
-//                    for (int i = 0; i < RandomInput.NUMBER_OF_RANDOM_PUZZLES; i++) {
-//                        randomPuzzle = randomInput.populatePuzzle();
-//
-//                        puzzleState = new PuzzleState(randomPuzzle, HEURISTIC_FUNC_1);
-//                        frontier = new Frontier(puzzleState);
-//
-//                        //print result
-//                        System.out.println(frontier.toString());
-//                    }
-//
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
+        while(true) {
+            printWelcomeMsg();
+
+            int num;
+            do {
+                System.out.print("Enter a number: ");
+                num = Integer.parseInt(sc.nextLine());
+            } while (!((num >= 1) && (num <= 3)));
+
+            switch (num) {
+                case 1:
+                    System.exit(0);
+                    break;
+                case 2:
+                    String enteredPuzzle;
+                    String formattedPuzzle;
+
+                    //ask for puzzle input
+                    do {
+                        System.out.print("Enter a puzzle: ");
+                        enteredPuzzle = sc.nextLine();
+                        formattedPuzzle = correctInput(enteredPuzzle);
+                    } while (formattedPuzzle == null);
+
+                    //solve puzzle
+                    puzzleState = new PuzzleState(formattedPuzzle, hFunc);
+                    frontier = new Frontier(puzzleState);
+
+                    //print results
+                    System.out.println(frontier.toString());
+
+                    break;
+                case 3:
+                    RandomInput randomInput = new RandomInput();
+
+                    //generate puzzle input
+                    String randomPuzzle;
+
+                    for (int i = 0; i < RandomInput.NUMBER_OF_RANDOM_PUZZLES; i++) {
+                        randomPuzzle = randomInput.populatePuzzle();
+
+                        puzzleState = new PuzzleState(randomPuzzle, hFunc);
+                        frontier = new Frontier(puzzleState);
+
+                        //print result
+                        System.out.println(frontier.toString());
+                    }
+
+                    break;
+                case 4:
+                    hFunc = ((hFunc instanceof HFunc1)? HEURISTIC_FUNC_2: HEURISTIC_FUNC_1);
+                default:
+                    break;
+            }
+        }
     }
 
     private static String correctInput(String puzzle){
@@ -101,7 +107,8 @@ public class Main {
                 "Main menu:\n" +
                 "\t(1)Exit\n" +
                 "\t(2)Enter a puzzle in the format:# # # # # # # # #.\n\tThere cannot be any repeating numbers, and the numbers must be between 0-8\n"+
-                "\t(3)Generate and solve 10 random puzzles\n");
+                "\t(3)Generate and solve 10 random puzzles\n" +
+                "\t(4)Switch heuristic function\n");
     }
 
     private static void runTests(){
@@ -115,7 +122,7 @@ public class Main {
 
                 while ((newPuzzle = rtf.populatePuzzle()) != null) {
                     if (PuzzleStateController.isValid(newPuzzle)) {
-                        testPuzzle = new PuzzleState(newPuzzle, HEURISTIC_FUNC_1);
+                        testPuzzle = new PuzzleState(newPuzzle, hFunc);
                         frontier = new Frontier(testPuzzle);
                         System.out.println(frontier.toString());
                     }
@@ -135,7 +142,7 @@ public class Main {
 
             for (int i = 0; i < WriteSampleOutput.NUMBER_OF_SAMPLE_PUZZLES; i++) {
                 puzzle = randomInput.populatePuzzle();
-                writeSampleOutput.write(puzzle, HEURISTIC_FUNC_1);
+                writeSampleOutput.write(puzzle, hFunc);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -151,9 +158,11 @@ public class Main {
             for (int i = 0; i < WriteDataCollection.NUMBER_OF_PUZZLES; i++){
                 puzzle = randomInput.populatePuzzle();
                 writeDataCollection.addData(puzzle, HEURISTIC_FUNC_1);
+                writeDataCollection.addData(puzzle, HEURISTIC_FUNC_2);
             }
 
-            System.out.println(writeDataCollection.write());
+            writeDataCollection.writeAll();
+
         }catch (Exception e){
             e.printStackTrace();
         }

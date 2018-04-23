@@ -9,16 +9,16 @@ public class Frontier {
     private static int numberOfStates = 0;
     private int finalDepth = 0;
     private long timeCost = 0;
-
     private String puzzlePath = "\n";
 
-
     public Frontier(PuzzleState root){
-
+        //start time
         long startTime = System.nanoTime();
 
+        //run aStar
         PuzzleState finalState = FrontierController.aStarAlgorithm(root);
 
+        //end time
         timeCost = System.nanoTime() - startTime;
 
         if (!(finalState == null)){
@@ -29,10 +29,7 @@ public class Frontier {
                 puzzlePath = temp.getTiles() + "\n" + puzzlePath;
             }
         }
-
-        System.out.println("TIME " + timeCost);
     }
-
 
     public String toString() {
         return "Depth " + finalDepth + "\n"

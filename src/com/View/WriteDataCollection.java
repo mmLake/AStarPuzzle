@@ -1,17 +1,15 @@
 package com.View;
 
 import com.controller.HFunc;
+import com.controller.HFunc1;
 import com.model.DataCollection;
 import com.model.Frontier;
 import com.model.PuzzleState;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,21 +22,22 @@ public class WriteDataCollection {
 
     private File file;
     private PrintWriter bw;
-    private Map<Integer, DataCollection> allData = new HashMap<>();
+    private Map<Integer, DataCollection> allDataH1 = new HashMap<>();
+    private Map<Integer, DataCollection> allDataH2 = new HashMap<>();
 
     public WriteDataCollection() throws Exception{
         file = new File(OUTPUT_FILE_PATH);
         bw = new PrintWriter(new FileWriter(file, true));
     }
 
-    public void addData(String puzzle, HFunc hFunc){
-        PuzzleState puzzleState = new PuzzleState(puzzle, hFunc);
-        Frontier frontier = new Frontier(puzzleState);
+    private void addDataHelper(PuzzleState puzzle, Map<Integer, DataCollection> allData){
+        Frontier frontier = new Frontier(puzzle);
 
         int currKey = frontier.getFinalDepth();
 
         if (allData.containsKey(currKey)){
-            allData.get(currKey).addToDataCollection(frontier.getNumberOfStates(), frontier.getTimeCost());
+            allData.get(currKey)
+                    .addToDataCollection(frontier.getNumberOfStates(), frontier.getTimeCost());
         } else{
             DataCollection data = new DataCollection();
             data.addToDataCollection(frontier.getNumberOfStates(), frontier.getTimeCost());
@@ -47,21 +46,34 @@ public class WriteDataCollection {
         }
     }
 
-    public String toString(){
-        String dataString = "Depth\t# of puzzles\tAvg solution cost\tAvg time cost\n";
-        for (int i: allData.keySet()){
-            int totalNumOfPuzzles = allData.get(i).getTotalPuzzles();
-            double totalTimeInSecs = allData.get(i).getTotalTimeCost() / 1000000000.0;
-
-            dataString += i + "\t\t"
-                    + totalNumOfPuzzles + "\t\t"
-                    + allData.get(i).getTotalSolutionCost() / totalNumOfPuzzles + "\t\t"
-                    + totalTimeInSecs / totalNumOfPuzzles + "\n";
+    public void addData(String puzzle, HFunc hFunc){
+        //add data to appropriate map
+        if (hFunc instanceof HFunc1){
+            PuzzleState puzzleState = new PuzzleState(puzzle, hFunc);
+            addDataHelper(puzzleState, allDataH1);
+        } else {
+            PuzzleState puzzleState = new PuzzleState(puzzle, hFunc);
+            addDataHelper(puzzleState, allDataH2);
         }
-        return dataString;
     }
 
-    public Boolean write(){
+    public void writeAll(){
+        bw.printf("H1\n");
+        bw.flush();
+        if (!write(allDataH1)){
+            bw.printf("ERROR\n");
+            bw.flush();
+        }
+
+        bw.printf("H2\n");
+        bw.flush();
+        if (!write(allDataH2)){
+            bw.printf("ERROR\n");
+            bw.flush();
+        }
+    }
+
+    private Boolean write(Map<Integer, DataCollection> allData){
 
         try {
             //write header
