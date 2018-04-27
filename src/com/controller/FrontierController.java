@@ -12,7 +12,7 @@ import java.util.Queue;
  * Created by mayalake on 4/22/18.
  */
 public class FrontierController {
-    private static final HashMap<Integer, Integer[]> MAP_TO_IDXS_FOR_0 = new HashMap<>();
+    private static final HashMap<Integer, Integer[]> MAP_TO_IDXS_FOR_0 = new HashMap<Integer, Integer[]>();
     private static final int GOAL_STATE_H_VAL = 0;
 
     public static void instantiateExpandIdxMap(){
